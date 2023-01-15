@@ -10,13 +10,13 @@
 import Foundation
 
 /// Utility to simplify making a URL String with parameters.
-final class URLStringBuilder {
+public final class URLStringBuilder {
     private let baseURL: String
     private var urlParameters: [(key: String, value: String)] = []
 
     /// Initializer.
     /// - Parameter baseURL: a URL based on the builder settings.
-    init(baseURL: String) {
+    public init(baseURL: String) {
         self.baseURL = baseURL
     }
 
@@ -26,7 +26,7 @@ final class URLStringBuilder {
     ///   - value: The value to append to the URLStringBuilder.
     ///   - percentEncoding: Specifies whether the value should be percent encoded.
     /// - Returns: URLStringBuilder instance.
-    func append(key: String, value: String, percentEncoding: Bool = false) -> URLStringBuilder {
+    public func append(key: String, value: String, percentEncoding: Bool = false) -> URLStringBuilder {
         appendIf(true, key: key, value: value, percentEncoding: percentEncoding)
     }
 
@@ -37,7 +37,7 @@ final class URLStringBuilder {
     ///   - value: The value to append to the URLStringBuilder.
     ///   - percentEncoding: Specifies whether the value should be percent encoded.
     /// - Returns: URLStringBuilder instance.
-    func appendIf(_ condition: Bool, key: String, value: String, percentEncoding: Bool = false) -> URLStringBuilder {
+    public func appendIf(_ condition: Bool, key: String, value: String, percentEncoding: Bool = false) -> URLStringBuilder {
         guard condition else {
             return self
         }
@@ -59,7 +59,7 @@ final class URLStringBuilder {
     ///   - sequence: Sequence with values.
     ///   - content:  A closure that takes itself and an element of the sequence as a parameter.
     /// - Returns: URLStringBuilder instance.
-    func forEach<T: Sequence>(_ sequence: T, content: (URLStringBuilder, T.Element) -> URLStringBuilder) -> URLStringBuilder {
+    public func forEach<T: Sequence>(_ sequence: T, content: (URLStringBuilder, T.Element) -> URLStringBuilder) -> URLStringBuilder {
         var builder = self
         for element in sequence {
             builder = content(builder, element)
@@ -69,7 +69,7 @@ final class URLStringBuilder {
   
     /// Builds a URL String using the components.
     /// - Returns: A URL built from the components.
-    func build() -> String {
+    public func build() -> String {
         var built = baseURL
         for (index, element) in urlParameters.enumerated() {
             built += (index == 0) ? "?" : "&"
