@@ -73,8 +73,15 @@ final class URLStringBuilderTests: XCTestCase {
     /// パーセントエンコーディングに失敗するケース。
     func testFailedPercentEncoding() throws {
 
-        // FIXME: I don't know how to fail addingPercentEncoding(withAllowedCharacters: .urlPathAllowed).
-        // addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)を失敗させる方法が不明。
+        let baseURL = "https://github.com/hackenbacker"
+        let invalid = String(bytes: [0xD8, 0x40], encoding: .utf16BigEndian)!
         
+        let urlString = URLStringBuilder(baseURL: baseURL)
+            .append(key: "text", value: invalid, percentEncoding: true)
+            .build()
+        
+        XCTAssertEqual(urlString, "\(baseURL)?text=",
+                       "percent encoding didn't occur an error.")
+                        // パーセントエンコーディングがエラーを発生しない。
     }
 }
