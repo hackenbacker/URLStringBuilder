@@ -12,9 +12,9 @@ let someURL: "https://github.com/hackenbacker"
 
 let urlString = URLStringBuilder(baseURL: someURL)
                   .append(key: "key1", value: "hello")
-                  .append(key: "key2", value: "world")
+                  .append(key: "key2", value: 5)
                   .build()
-// https://github.com/hackenbacker?key1=hello&key2=world
+// https://github.com/hackenbacker?key1=hello&key2=5
 ```
 
 URL string with url encoding.
