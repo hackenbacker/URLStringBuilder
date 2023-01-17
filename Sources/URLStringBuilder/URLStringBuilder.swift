@@ -33,7 +33,8 @@ public final class URLStringBuilder {
     ///   - value: The value to append to the URLStringBuilder.
     ///   - option: An optional operation to appending the value.
     /// - Returns: URLStringBuilder instance.
-    public func append(key: String, value: String, with option: Options? = nil) -> URLStringBuilder {
+    public func append(key: String, value: any LosslessStringConvertible,
+                       with option: Options? = nil) -> URLStringBuilder {
         appendIf(true, key: key, value: value, with: option)
     }
 
@@ -44,30 +45,45 @@ public final class URLStringBuilder {
     ///   - value: The value to append to the URLStringBuilder.
     ///   - option: An optional operation to appending the value.
     /// - Returns: URLStringBuilder instance.
-    public func appendIf(_ condition: Bool, key: String, value: String, with option: Options? = nil) -> URLStringBuilder {
+    public func appendIf(_ condition: Bool,
+                         key: String, value: any LosslessStringConvertible,
+                         with option: Options? = nil) -> URLStringBuilder {
         guard condition else {
             return self
         }
 
-        let encoded: String
-        switch option {
-        case .urlEncoding:
-            encoded = value.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        case .none:
-            encoded = value
-        }
-
-        urlParameters.append((key: key, value: encoded))
+        urlParameters.append((key: key, value: convert(value, with: option)))
 
         return self
     }
-   
+    
+    /// Converts a given value to String.
+    /// - Parameters:
+    ///   - value:  The value to convert to String.
+    ///   - option: An optional operation to appending the value.
+    /// - Returns: A converted String.
+    private func convert(_ value: LosslessStringConvertible, with option: Options?) -> String {
+        switch value {
+        case let string as String:
+            switch option {
+            case .urlEncoding:
+                return string.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+            case .none:
+                return string
+            }
+        default:
+            return String(value)
+        }
+    }
+    
     /// Calls the given closure on each element in the sequence in the same order as a for-in loop.
     /// - Parameters:
     ///   - sequence: Sequence with values.
     ///   - content:  A closure that takes itself and an element of the sequence as a parameter.
     /// - Returns: URLStringBuilder instance.
-    public func forEach<T: Sequence>(_ sequence: T, content: (URLStringBuilder, T.Element) -> URLStringBuilder) -> URLStringBuilder {
+    public func forEach<T: Sequence>(_ sequence: T,
+                                     content: (URLStringBuilder, T.Element) -> URLStringBuilder
+                                    ) -> URLStringBuilder {
         var builder = self
         for element in sequence {
             builder = content(builder, element)

@@ -26,9 +26,10 @@ final class URLStringBuilderTests: XCTestCase {
         let urlString = URLStringBuilder(baseURL: baseURL)
             .append(key: "type", value: "source")
             .append(key: "type", value: "target")
+            .append(key: "Int",  value: 5)
             .build()
         
-        XCTAssertEqual(urlString, "\(baseURL)?type=source&type=target",
+        XCTAssertEqual(urlString, "\(baseURL)?type=source&type=target&Int=5",
                        "append() is not executed as expected.")
         // append()が期待通りに実行されていない。
     }
@@ -41,9 +42,9 @@ final class URLStringBuilderTests: XCTestCase {
         let condition = true
         
         let urlString = URLStringBuilder(baseURL: baseURL)
-            .appendIf(condition, key: "type", value: "true")
+            .appendIf(condition,  key: "type", value: "true")
             .appendIf(!condition, key: "type", value: "false")
-            .appendIf(condition, key: "text", value: "This is it?", with: .urlEncoding)
+            .appendIf(condition,  key: "text", value: "This is it?", with: .urlEncoding)
             .build()
         
         XCTAssertEqual(urlString, "\(baseURL)?type=true&text=This%20is%20it%3F",
