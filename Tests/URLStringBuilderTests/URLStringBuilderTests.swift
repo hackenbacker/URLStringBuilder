@@ -43,7 +43,7 @@ final class URLStringBuilderTests: XCTestCase {
         let urlString = URLStringBuilder(baseURL: baseURL)
             .appendIf(condition, key: "type", value: "true")
             .appendIf(!condition, key: "type", value: "false")
-            .appendIf(condition, key: "text", value: "This is it?", percentEncoding: true)
+            .appendIf(condition, key: "text", value: "This is it?", with: .urlEncoding)
             .build()
         
         XCTAssertEqual(urlString, "\(baseURL)?type=true&text=This%20is%20it%3F",
@@ -77,7 +77,7 @@ final class URLStringBuilderTests: XCTestCase {
         let invalid = String(bytes: [0xD8, 0x40], encoding: .utf16BigEndian)!
         
         let urlString = URLStringBuilder(baseURL: baseURL)
-            .append(key: "text", value: invalid, percentEncoding: true)
+            .append(key: "text", value: invalid, with: .urlEncoding)
             .build()
         
         XCTAssertEqual(urlString, "\(baseURL)?text=",

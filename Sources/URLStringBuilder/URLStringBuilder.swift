@@ -11,6 +11,13 @@ import Foundation
 
 /// Utility to simplify making a URL String with parameters.
 public final class URLStringBuilder {
+
+    /// Options for appending operations.
+    public enum Options {
+        /// Replaces with percent encoded characters.
+        case urlEncoding
+    }
+
     private let baseURL: String
     private var urlParameters: [(key: String, value: String)] = []
 
@@ -24,10 +31,10 @@ public final class URLStringBuilder {
     /// - Parameters:
     ///   - key:   The key to append to the URLStringBuilder.
     ///   - value: The value to append to the URLStringBuilder.
-    ///   - percentEncoding: Specifies whether the value should be percent encoded.
+    ///   - option: An optional operation to appending the value.
     /// - Returns: URLStringBuilder instance.
-    public func append(key: String, value: String, percentEncoding: Bool = false) -> URLStringBuilder {
-        appendIf(true, key: key, value: value, percentEncoding: percentEncoding)
+    public func append(key: String, value: String, with option: Options? = nil) -> URLStringBuilder {
+        appendIf(true, key: key, value: value, with: option)
     }
 
     /// Adds a new key/value pair into the builder if given condition is true.
@@ -35,17 +42,18 @@ public final class URLStringBuilder {
     ///   - condition: Specifying whether given key and value should be append.
     ///   - key:   The key to append to the URLStringBuilder.
     ///   - value: The value to append to the URLStringBuilder.
-    ///   - percentEncoding: Specifies whether the value should be percent encoded.
+    ///   - option: An optional operation to appending the value.
     /// - Returns: URLStringBuilder instance.
-    public func appendIf(_ condition: Bool, key: String, value: String, percentEncoding: Bool = false) -> URLStringBuilder {
+    public func appendIf(_ condition: Bool, key: String, value: String, with option: Options? = nil) -> URLStringBuilder {
         guard condition else {
             return self
         }
 
         let encoded: String
-        if percentEncoding {
+        switch option {
+        case .urlEncoding:
             encoded = value.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        } else {
+        case .none:
             encoded = value
         }
 
