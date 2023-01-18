@@ -1,5 +1,11 @@
 # ⚙️ URLStringBuilder
+[![Swift](https://img.shields.io/badge/Swift-5.7-darkorange?style=flat-square)](https://img.shields.io/badge/Swift-5.7-darkorange?style=flat-square)
+[![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-darkorange?style=flat-square)](https://img.shields.io/badge/Swift_Package_Manager-compatible-darkorange?style=flat-square)
+[![Platforms](https://img.shields.io/badge/Platforms-iOS%2015.0%20or%20lator-yellowgreen?style=flat-square)](https://img.shields.io/badge/Platforms-iOS%2015.0%20or%20lator-yellowgreen?style=flat-square)
+
 Utility to simplify making a URL String with parameters.
+
+---
 
 ## Usage
 
@@ -11,9 +17,9 @@ import URLStringBuilder
 let someURL: "https://github.com/hackenbacker"
 
 let urlString = URLStringBuilder(baseURL: someURL)
-                  .append(key: "key1", value: "hello")
-                  .append(key: "key2", value: 5)
-                  .build()
+   .append(key: "key1", value: "hello")
+   .append(key: "key2", value: 5)
+   .build()
 // https://github.com/hackenbacker?key1=hello&key2=5
 ```
 
