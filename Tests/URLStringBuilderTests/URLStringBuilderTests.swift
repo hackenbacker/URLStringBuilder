@@ -57,17 +57,36 @@ final class URLStringBuilderTests: XCTestCase {
     func testForEach() throws {
         
         let baseURL = "https://github.com/hackenbacker"
-        let list: [String] = ["source", "target"]
+        let list: [(key: String, value: String)] = [
+            (key: "source", value: "EN"),
+            (key: "target", value: "JA")
+        ]
 
         let urlString = URLStringBuilder(baseURL: baseURL)
             .forEach(list) {
-                $0.append(key: "text", value: $1)
+                $0.append(key: $1.key, value: $1.value)
             }
             .build()
 
-        XCTAssertEqual(urlString, "\(baseURL)?text=source&text=target",
+        XCTAssertEqual(urlString, "\(baseURL)?source=EN&target=JA",
                        "forEach() is not executed as expected.")
                         // forEach()が期待通りに実行されていない。
+    }
+
+    /// Test to append Sequence.
+    /// Sequenceをappendするテスト
+    func testAppendSequence() throws {
+        
+        let baseURL = "https://github.com/hackenbacker"
+        let list: [String] = ["source", "target"]
+
+        let urlString = URLStringBuilder(baseURL: baseURL)
+            .append(key: "text", values: list)
+            .build()
+
+        XCTAssertEqual(urlString, "\(baseURL)?text=source&text=target",
+                       "append(key:values:) is not executed as expected.")
+                        // append(key:values:)が期待通りに実行されていない。
     }
     
     /// Cases where percent encoding fails.

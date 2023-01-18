@@ -27,10 +27,10 @@ public final class URLStringBuilder {
         self.baseURL = baseURL
     }
 
-    /// Adds a new key/value pair into the builder.
+    /// Adds a new key/value pair to the URL string.
     /// - Parameters:
-    ///   - key:   The key to append to the URLStringBuilder.
-    ///   - value: The value to append to the URLStringBuilder.
+    ///   - key:   The key to append to the URL string.
+    ///   - value: The value to append to the URL string.
     ///   - option: An optional operation to appending the value.
     /// - Returns: URLStringBuilder instance.
     public func append(key: String, value: any LosslessStringConvertible,
@@ -38,11 +38,11 @@ public final class URLStringBuilder {
         appendIf(true, key: key, value: value, with: option)
     }
 
-    /// Adds a new key/value pair into the builder if given condition is true.
+    /// Adds a new key/value pair to the URL string if given condition is true.
     /// - Parameters:
     ///   - condition: Specifying whether given key and value should be append.
-    ///   - key:   The key to append to the URLStringBuilder.
-    ///   - value: The value to append to the URLStringBuilder.
+    ///   - key:   The key to append to the URL string.
+    ///   - value: The value to append to the URL string.
     ///   - option: An optional operation to appending the value.
     /// - Returns: URLStringBuilder instance.
     public func appendIf(_ condition: Bool,
@@ -85,17 +85,32 @@ public final class URLStringBuilder {
                                      content: (URLStringBuilder, T.Element) -> URLStringBuilder
                                     ) -> URLStringBuilder {
         var builder = self
-        for element in sequence {
+        sequence.forEach { element in
             builder = content(builder, element)
         }
         return builder
     }
-  
+
+    /// Adds new key/value pairs to the URL string.
+    /// - Parameters:
+    ///   - key:    The key to append to the URL string.
+    ///   - values: The values to append to the URL string.
+    ///   - option: An optional operation to appending the value.
+    /// - Returns: URLStringBuilder instance.
+    public func append<E: LosslessStringConvertible>(key: String, values: any Sequence<E>,
+                       with option: Options? = nil) -> URLStringBuilder {
+        var builder = self
+        values.forEach { value in
+            builder = appendIf(true, key: key, value: value, with: option)
+        }
+        return builder
+    }
+
     /// Builds a URL String using the components.
     /// - Returns: A URL built from the components.
     public func build() -> String {
         var built = baseURL
-        for (index, element) in urlParameters.enumerated() {
+        urlParameters.enumerated().forEach { index, element in
             built += (index == 0) ? "?" : "&"
             built += element.key
             built += "="
