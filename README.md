@@ -51,14 +51,30 @@ URL string with Sequence.
 import URLStringBuilder
 
 let someURL: "https://github.com/hackenbacker"
-let list: [String] = [
-    "Foo", "Bar", "Moo"
+let list: [String] = ["source", "target"]
+
+let urlString = URLQueryBuilder(baseURL: someURL)
+   .append(key: "text", values: list)
+   .build()
+// https://github.com/hackenbacker?text=source&text=target
+```
+
+URL string with forEach iteration.
+
+```swift
+import URLStringBuilder
+
+let someURL: "https://github.com/hackenbacker"
+let list: [(key: String, value: String)] = [
+   (key: "source", value: "EN"),
+   (key: "target", value: "JA")
 ] 
 
 let urlString = URLQueryBuilder(baseURL: someURL)
    .forEach(list) {
-     $0.append(key: "text". value: $1)
+     $0.append(key: $1.key, value: $1.value)
    }
    .build()
-// https://github.com/hackenbacker?text=Foo&text=Bar&text=Moo
+// https://github.com/hackenbacker?source=EN&target=JA
 ```
+
