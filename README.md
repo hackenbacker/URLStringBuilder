@@ -2,6 +2,7 @@
 [![Swift](https://img.shields.io/badge/Swift-5.7-darkorange?style=flat-square)](https://img.shields.io/badge/Swift-5.7-darkorange?style=flat-square)
 [![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-darkorange?style=flat-square)](https://img.shields.io/badge/Swift_Package_Manager-compatible-darkorange?style=flat-square)
 [![Platforms](https://img.shields.io/badge/Platforms-iOS%2015.0%20or%20lator-yellowgreen?style=flat-square)](https://img.shields.io/badge/Platforms-iOS%2015.0%20or%20lator-yellowgreen?style=flat-square)
+[![CI](https://github.com/hackenbacker/URLStringBuilder/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/hackenbacker/URLStringBuilder/actions/workflows/main.yml)
 
 Utility to simplify making a URL String with parameters.
 
